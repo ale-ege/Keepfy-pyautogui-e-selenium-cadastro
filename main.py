@@ -1,24 +1,36 @@
 #IMPORTAÇÃO DE BIBLIOTECAS
 import pyautogui
 import pandas as pd
-from selenium import webdriver
 from time import sleep
 from selenium.webdriver.common.by import By
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import csv
 
-#GERAR DATAFRAME
-df = pd.read_excel('MAN2.xlsx')
-#print(df)
-print(df.columns[:3])
+
+#CONFIG NAVEGADOR
+navegador = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
 
 #LISTA DE VARIAVEIS
 link_login = 'https://app.keepfy.com/login'
 link_cadastro = 'https://app.keepfy.com/general-registrations/products/create'
-email = "alth@hotmail.com.br"
-senha = "Aa123456"
+email = "keepfymadesa@gmail.com"
+senha = "*Md2020"
+
+
+#GERAR DATAFRAME COM ITENS A SEREM CADASTRADOS
+df = pd.read_excel('man.xlsx')
+print(df)
+
+
+#GERAR DATAFRAME COM ITENS CADASTRADOS
+cad = pd.read_xls('data.csv')
+print(cad)
 
 
 #LOGIN NO SITE
-navegador = webdriver.Chrome(executable_path=r"C:chromedriver.exe")
 navegador.get(url=link_login)
 print(navegador.title)
 sleep(1.5)
@@ -29,7 +41,7 @@ sleep(0.15)
 pyautogui.press('tab')
 pyautogui.press('space')
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiButton-fullWidth").click()
-print("Enter clicado!")
+print("Login realizado!")
 sleep(1.5)
 
 
@@ -63,4 +75,20 @@ for i, material in enumerate(df['Material']):
         pyautogui.press('tab')
         pyautogui.press('Enter')
         sleep(2.75)
-        print("Material cadastrado: {}, R${}, UN{}".format(material, custo, medida))
+        print("Material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
+        #cad_new = pd.DataFrame({'Descrição': material, 'Custo': custo, 'Unidade': medida})
+        #cad = pd.concat([cad, cad_new])
+        #writer = pd.ExcelWriter('data.xlsx', mode='a')
+        #cad.to_excel(writer, 'data', index=false)
+        #writer.save()
+
+        valores = [
+                ("Categoria", "Valor"),
+                ("Restaurante", 45.99),
+                ("Transporte", 208.45),
+                ("Viagem", 558.54)
+        ]
+        for linha in valores:
+                planilha1.append(linha)
+
+        arquivo_excel.save("data.xlsx")
