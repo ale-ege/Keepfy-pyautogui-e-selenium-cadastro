@@ -5,7 +5,7 @@ from selenium import webdriver
 from time import sleep
 from selenium.webdriver.common.by import By
 
-#Gerar dataframe apartir
+#GERAR DATAFRAME
 df = pd.read_excel('MAN2.xlsx')
 #print(df)
 print(df.columns[:3])
