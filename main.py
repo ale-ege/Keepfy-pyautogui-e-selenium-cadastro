@@ -13,8 +13,8 @@ print(df.columns[:3])
 #LISTA DE VARIAVEIS
 link_login = 'https://app.keepfy.com/login'
 link_cadastro = 'https://app.keepfy.com/general-registrations/products/create'
-email = "keepfymadesa@gmail.com"
-senha = "*Md2020"
+email = "alth@hotmail.com.br"
+senha = "Aa123456"
 
 
 #LOGIN NO SITE
