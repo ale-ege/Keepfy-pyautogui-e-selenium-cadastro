@@ -1,15 +1,17 @@
-from openpyxl import load_workbook
-caminho = '.\data.xlsx'
-arquivo_excel = load_workbook(caminho)
-planilha1 = arquivo_excel.active
+import pandas as pd
 
-valores = [
-    ("Categoria", "Valor"),
-    ("Restaurante", 45.99),
-    ("Transporte", 208.45),
-    ("Viagem", 558.54)
-]
-for linha in valores:
-    planilha1.append(linha)
+#GERAR DATAFRAME COM ITENS A SEREM CADASTRADOS
+df = pd.read_excel('man.xlsx')
+print(df)
 
-arquivo_excel.save("data.xlsx")
+
+#GERAR DATAFRAME COM ITENS CADASTRADOS
+cad = pd.read_excel('data.xlsx')
+print(cad)
+
+for i, material in enumerate(df['Material']):
+    print(material)
+    if (material in (cad['Descriçăo'].values)):
+        print("Material cadastrado!")
+    else:
+        print("NOK")
