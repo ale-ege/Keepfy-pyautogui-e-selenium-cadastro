@@ -18,7 +18,6 @@ link_login = 'https://app.keepfy.com/login'
 link_cadastro = 'https://app.keepfy.com/general-registrations/products/create'
 email = "keepfymadesa@gmail.com"
 senha = "*Md2020"
-#caminho = '.\data.xlsx'
 
 
 #GERAR DATAFRAME COM ITENS A SEREM CADASTRADOS
@@ -43,12 +42,11 @@ pyautogui.press('tab')
 pyautogui.press('space')
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiButton-fullWidth").click()
 print("Login realizado!")
-sleep(1.5)
 
 
 # CADASTRO DE ITENS
-
 for i, material in enumerate(df['Material']):
+    #Testa se o material já foi cadastrado
     if (material in (cad['Descriçăo'].values)):
         print("Material já cadastrado!")
         print(material)
@@ -56,12 +54,13 @@ for i, material in enumerate(df['Material']):
         medida = 'Unidade (un)'
         custo = df.loc[i, 'Custo Unitário ']
         #Acesso a pagina de cadastro
+        sleep(2)
         navegador.get(url=link_cadastro)
         sleep(2)
         # Clica em add material
         navegador.find_element(by=By.XPATH, value='//*[@id="root"]/div/div/main/div[2]/div/div[11]/div').click()
         sleep(3.15)
-        #Novo arquivo
+        #Novo material
         navegador.find_element(by=By.ID, value="add-materials").click()
         sleep(2)
         # Inserir material
@@ -86,10 +85,6 @@ for i, material in enumerate(df['Material']):
         valores = [material, custo, medida]
         planilha1.append(valores)
         arquivo_excel.save("data.xlsx")
-        # Salva material no dataframe de itens cadastrados
-        #cad_new = pd.DataFrame({'Descrição': material, 'Custo': custo, 'Unidade': medida})
-        #cad = pd.concat([cad, cad_new])
-        sleep(2.75)
         print("Material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
 
 
