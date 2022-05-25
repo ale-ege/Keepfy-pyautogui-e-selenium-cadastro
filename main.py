@@ -1,12 +1,12 @@
 #IMPORTAÇÃO DE BIBLIOTECAS
-import pyautogui
 import pandas as pd
 from time import sleep
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+import pyautogui
 from webdriver_manager.chrome import ChromeDriverManager
-import csv
+from openpyxl import load_workbook
 
 
 #CONFIG NAVEGADOR
@@ -18,6 +18,7 @@ link_login = 'https://app.keepfy.com/login'
 link_cadastro = 'https://app.keepfy.com/general-registrations/products/create'
 email = "keepfymadesa@gmail.com"
 senha = "*Md2020"
+#caminho = '.\data.xlsx'
 
 
 #GERAR DATAFRAME COM ITENS A SEREM CADASTRADOS
@@ -26,7 +27,7 @@ print(df)
 
 
 #GERAR DATAFRAME COM ITENS CADASTRADOS
-cad = pd.read_xls('data.csv')
+cad = pd.read_excel('data.xlsx')
 print(cad)
 
 
@@ -46,7 +47,12 @@ sleep(1.5)
 
 
 # CADASTRO DE ITENS
+
 for i, material in enumerate(df['Material']):
+    if (material in (cad['Descriçăo'].values)):
+        print("Material já cadastrado!")
+        print(material)
+    else:
         medida = 'Unidade (un)'
         custo = df.loc[i, 'Custo Unitário ']
         #Acesso a pagina de cadastro
@@ -54,7 +60,7 @@ for i, material in enumerate(df['Material']):
         sleep(2)
         # Clica em add material
         navegador.find_element(by=By.XPATH, value='//*[@id="root"]/div/div/main/div[2]/div/div[11]/div').click()
-        sleep(2.75)
+        sleep(3.15)
         #Novo arquivo
         navegador.find_element(by=By.ID, value="add-materials").click()
         sleep(2)
@@ -74,21 +80,17 @@ for i, material in enumerate(df['Material']):
         pyautogui.press('tab')
         pyautogui.press('tab')
         pyautogui.press('Enter')
-        sleep(2.75)
-        print("Material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
+        # Salvar material cadastrado em arquivo excel
+        arquivo_excel = load_workbook(".\data.xlsx")
+        planilha1 = arquivo_excel.active
+        valores = [material, custo, medida]
+        planilha1.append(valores)
+        arquivo_excel.save("data.xlsx")
+        # Salva material no dataframe de itens cadastrados
         #cad_new = pd.DataFrame({'Descrição': material, 'Custo': custo, 'Unidade': medida})
         #cad = pd.concat([cad, cad_new])
-        #writer = pd.ExcelWriter('data.xlsx', mode='a')
-        #cad.to_excel(writer, 'data', index=false)
-        #writer.save()
+        sleep(2.75)
+        print("Material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
 
-        valores = [
-                ("Categoria", "Valor"),
-                ("Restaurante", 45.99),
-                ("Transporte", 208.45),
-                ("Viagem", 558.54)
-        ]
-        for linha in valores:
-                planilha1.append(linha)
 
-        arquivo_excel.save("data.xlsx")
+
