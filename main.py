@@ -1,48 +1,51 @@
 #IMPORTAÇÃO DE BIBLIOTECAS
 import pandas as pd
+from openpyxl import load_workbook
 from time import sleep
+import pyautogui
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-import pyautogui
-from webdriver_manager.chrome import ChromeDriverManager
-from openpyxl import load_workbook
-
+from selenium.webdriver.support.expected_conditions import (
+    presence_of_element_located
+)
 
 #CONFIG NAVEGADOR
 navegador = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-
+wdw = WebDriverWait(navegador, 30)
 
 #LISTA DE VARIAVEIS
-link_login = 'https://app.keepfy.com/login'
-link_cadastro = 'https://app.keepfy.com/general-registrations/products/create'
+url_login = 'https://app.keepfy.com/login'
+url_cadastro = 'https://app.keepfy.com/general-registrations/products/create'
 email = "keepfymadesa@gmail.com"
 senha = "*Md2020"
-
 
 #GERAR DATAFRAME COM ITENS A SEREM CADASTRADOS
 df = pd.read_excel('man.xlsx')
 print(df)
 
-
 #GERAR DATAFRAME COM ITENS CADASTRADOS
 cad = pd.read_excel('data.xlsx')
 print(cad)
 
-
 #LOGIN NO SITE
-navegador.get(url=link_login)
+navegador.get(url=url_login)
 print(navegador.title)
-sleep(1.5)
+locator = (By.CSS_SELECTOR, ".MuiButton-fullWidth")
+wdw.until(
+    presence_of_element_located(locator)
+)
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiInputBase-root input[name=email]").send_keys(email)
-sleep(0.05)
+sleep(0.15)
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiInputBase-root input[name=password]").send_keys(senha)
 sleep(0.15)
 pyautogui.press('tab')
 pyautogui.press('space')
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiButton-fullWidth").click()
-print("Login realizado!")
 
+print("Login realizado!")
 
 # CADASTRO DE ITENS
 for i, material in enumerate(df['Material']):
@@ -55,8 +58,12 @@ for i, material in enumerate(df['Material']):
         custo = df.loc[i, 'Custo Unitário ']
         #Acesso a pagina de cadastro
         sleep(2)
-        navegador.get(url=link_cadastro)
-        sleep(2)
+        navegador.get(url=url_cadastro)
+        locator = (By.CSS_SELECTOR, ".MuiButton-fullWidth")
+        wdw.until(
+            presence_of_element_located(locator)
+        )
+        sleep(3.5)
         # Clica em add material
         navegador.find_element(by=By.XPATH, value='//*[@id="root"]/div/div/main/div[2]/div/div[11]/div').click()
         sleep(3.15)
@@ -75,15 +82,14 @@ for i, material in enumerate(df['Material']):
         sleep(0.05)
         pyautogui.typewrite(medida)
         pyautogui.press('Enter')
-        sleep(0.05)
+        sleep(0.35)
         pyautogui.press('tab')
         pyautogui.press('tab')
         pyautogui.press('Enter')
         # Salvar material cadastrado em arquivo excel
         arquivo_excel = load_workbook(".\data.xlsx")
         planilha1 = arquivo_excel.active
-        valores = [material, custo, medida]
-        planilha1.append(valores)
+        planilha1.append([material, custo, medida])
         arquivo_excel.save("data.xlsx")
         print("Material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
 
