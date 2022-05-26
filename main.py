@@ -38,9 +38,9 @@ wdw.until(
     presence_of_element_located(locator)
 )
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiInputBase-root input[name=email]").send_keys(email)
-sleep(0.15)
+sleep(0.01)
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiInputBase-root input[name=password]").send_keys(senha)
-sleep(0.15)
+sleep(0.01)
 pyautogui.press('tab')
 pyautogui.press('space')
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiButton-fullWidth").click()
@@ -57,32 +57,36 @@ for i, material in enumerate(df['Material']):
         medida = 'Unidade (un)'
         custo = df.loc[i, 'Custo Unitário ']
         #Acesso a pagina de cadastro
-        sleep(2)
         navegador.get(url=url_cadastro)
-        locator = (By.CSS_SELECTOR, ".MuiButton-fullWidth")
+        locator2 = (By.XPATH, '//*[@id="root"]/div/div/main/div[2]/div/div[11]/div')
         wdw.until(
-            presence_of_element_located(locator)
+            presence_of_element_located(locator2)
         )
-        sleep(3.5)
+
         # Clica em add material
         navegador.find_element(by=By.XPATH, value='//*[@id="root"]/div/div/main/div[2]/div/div[11]/div').click()
-        sleep(3.15)
+        locator3 = (By.ID, "add-materials")
+        wdw.until(
+         presence_of_element_located(locator3)
+        )
         #Novo material
         navegador.find_element(by=By.ID, value="add-materials").click()
-        sleep(2)
+        locator4 = (By.ID, "material-description")
+        wdw.until(
+         presence_of_element_located(locator4)
+        )
         # Inserir material
         navegador.find_element(by=By.ID, value="material-description").send_keys(material)
-        sleep(0.05)
         pyautogui.press('tab')
         # Inserir custo
         navegador.find_element(by=By.NAME, value='standard-cost').send_keys(custo)
-        sleep(0.05)
+        sleep(0.01)
         pyautogui.press('tab')
         # Inserir medida
-        sleep(0.05)
+        sleep(0.01)
         pyautogui.typewrite(medida)
         pyautogui.press('Enter')
-        sleep(0.35)
+        sleep(0.01)
         pyautogui.press('tab')
         pyautogui.press('tab')
         pyautogui.press('Enter')
