@@ -38,9 +38,9 @@ wdw.until(
     presence_of_element_located(locator)
 )
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiInputBase-root input[name=email]").send_keys(email)
-sleep(0.01)
+sleep(0.5)
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiInputBase-root input[name=password]").send_keys(senha)
-sleep(0.01)
+sleep(0.5)
 pyautogui.press('tab')
 pyautogui.press('space')
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiButton-fullWidth").click()
@@ -95,7 +95,7 @@ for i, material in enumerate(df['Material']):
         planilha1 = arquivo_excel.active
         planilha1.append([material, custo, medida])
         arquivo_excel.save("data.xlsx")
-        print("Material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
+        print("Novo material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
 
 
 
