@@ -96,6 +96,3 @@ for i, material in enumerate(df['Material']):
         planilha1.append([material, custo, medida])
         arquivo_excel.save("data.xlsx")
         print("Novo material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
-
-
-
