@@ -44,8 +44,8 @@ sleep(0.5)
 pyautogui.press('tab')
 pyautogui.press('space')
 navegador.find_element(by=By.CSS_SELECTOR, value=".MuiButton-fullWidth").click()
-
 print("Login realizado!")
+sleep(2)
 
 # CADASTRO DE ITENS
 for i, material in enumerate(df['Material']):
@@ -62,7 +62,6 @@ for i, material in enumerate(df['Material']):
         wdw.until(
             presence_of_element_located(locator2)
         )
-
         # Clica em add material
         navegador.find_element(by=By.XPATH, value='//*[@id="root"]/div/div/main/div[2]/div/div[11]/div').click()
         locator3 = (By.ID, "add-materials")
@@ -96,6 +95,3 @@ for i, material in enumerate(df['Material']):
         planilha1.append([material, custo, medida])
         arquivo_excel.save("data.xlsx")
         print("Novo material cadastrado: {}, R$ {}, {}".format(material, custo, medida))
-
-
-
